@@ -1,4 +1,4 @@
-package com.jmonzon.offlinemovies
+package com.jmonzon.offlinemovies.app
 
 import android.app.Application
 import android.content.Context
