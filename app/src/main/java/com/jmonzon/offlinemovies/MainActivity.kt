@@ -2,6 +2,7 @@ package com.jmonzon.offlinemovies
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.jmonzon.offlinemovies.app.MyApp
 
 class MainActivity : AppCompatActivity() {
 
