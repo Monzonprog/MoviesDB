@@ -26,7 +26,7 @@ class MyMovieRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
         Glide.with(context)
-            .load(ApiConstant.urlPhotoApi + item.poster_path)
+            .load(ApiConstant.IMAGE_API_PREFIX + item.poster_path)
             .into(holder.imageViewCover)
 
     }
