@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jmonzon.offlinemovies.R
-import com.jmonzon.offlinemovies.data.local.MovieEntity
+import com.jmonzon.offlinemovies.data.local.dao.entity.MovieEntity
 
 class MovieFragment : Fragment() {
 

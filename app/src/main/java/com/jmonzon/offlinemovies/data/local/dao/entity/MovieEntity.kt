@@ -1,4 +1,4 @@
-package com.jmonzon.offlinemovies.data.local
+package com.jmonzon.offlinemovies.data.local.dao.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

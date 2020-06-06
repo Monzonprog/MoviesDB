@@ -9,7 +9,7 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.jmonzon.offlinemovies.R
 import com.jmonzon.offlinemovies.data.remote.ApiConstant
-import com.jmonzon.offlinemovies.data.local.MovieEntity
+import com.jmonzon.offlinemovies.data.local.dao.entity.MovieEntity
 import kotlinx.android.synthetic.main.fragment_movie.view.*
 
 class MyMovieRecyclerViewAdapter(
