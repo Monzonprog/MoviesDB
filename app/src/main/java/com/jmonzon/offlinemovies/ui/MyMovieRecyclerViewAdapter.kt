@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.fragment_movie.view.*
 
 class MyMovieRecyclerViewAdapter(
     private val context: Context,
-    private val mValues: List<MovieEntity>
+    private var mValues: List<MovieEntity>
 ) : RecyclerView.Adapter<MyMovieRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,7 +28,11 @@ class MyMovieRecyclerViewAdapter(
         Glide.with(context)
             .load(ApiConstant.IMAGE_API_PREFIX + item.poster_path)
             .into(holder.imageViewCover)
+    }
 
+    fun setData (movies: List<MovieEntity>){
+        mValues = movies
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int = mValues.size

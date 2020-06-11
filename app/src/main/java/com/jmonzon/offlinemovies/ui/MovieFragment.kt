@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jmonzon.offlinemovies.R
+import com.jmonzon.offlinemovies.app.MyApp
 import com.jmonzon.offlinemovies.data.local.dao.entity.MovieEntity
+import com.jmonzon.offlinemovies.data.network.Status
 import com.jmonzon.offlinemovies.viewModel.MovieViewModel
 
 class MovieFragment : Fragment() {
@@ -32,7 +34,6 @@ class MovieFragment : Fragment() {
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
-        movieViewModel = ViewModelProvider(this).get(MovieViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -40,7 +41,8 @@ class MovieFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_movie_list, container, false)
-
+        MyApp.setContext(view.context)
+        movieViewModel = ViewModelProvider(this).get(MovieViewModel::class.java)
         // Set the adapter
         if (view is RecyclerView) {
             with(view) {
@@ -48,8 +50,8 @@ class MovieFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyMovieRecyclerViewAdapter(context, movieList)
-                recyclerView.adapter = adapter
+                /*adapter = MyMovieRecyclerViewAdapter(context, movieList)
+                recyclerView.adapter = adapter*/
                 loadMovies(context)
             }
         }
@@ -58,9 +60,11 @@ class MovieFragment : Fragment() {
 
     private fun loadMovies(context: Context) {
         movieViewModel.getPopularMovies().observe(viewLifecycleOwner, Observer {
-            movieList = it.data!!
-            recyclerView.adapter = MyMovieRecyclerViewAdapter(context, movieList)
-            adapter.setData(movieList)
+            if (it.status.name !== Status.LOADING.toString()) {
+                movieList = it.data!!
+                recyclerView.adapter = MyMovieRecyclerViewAdapter(context, movieList)
+                adapter.setData(movieList)
+            }
         })
     }
 
