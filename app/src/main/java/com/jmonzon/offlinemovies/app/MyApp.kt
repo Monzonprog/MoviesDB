@@ -5,15 +5,19 @@ import android.content.Context
 
 abstract class MyApp : Application() {
     companion object {
+        private lateinit var instance: Context
+        fun setContext(context: Context) {
+            instance = context}
+        fun getContext () :Context {return instance}
 
-        private lateinit var context: Context
-
-        fun setContext(con: Context) {
-            context = con
-        }
-
-        fun getContext() : Context {
-            return context
-        }
     }
+
+    override fun onCreate() {
+        instance = this;
+        super.onCreate()
+    }
+
+
+
+
 }
