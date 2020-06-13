@@ -6,15 +6,15 @@ import com.jmonzon.offlinemovies.data.MovieRepository
 import com.jmonzon.offlinemovies.data.local.dao.entity.MovieEntity
 import com.jmonzon.offlinemovies.data.network.Resource
 
-class MovieViewModel : ViewModel(){
+class MovieViewModel : ViewModel() {
 
     companion object {
         private var movieRepository = MovieRepository()
-        var popularMovies: LiveData<Resource<List<MovieEntity>>> = movieRepository.getPopularMovies()
-
+        var popularMovies: LiveData<Resource<List<MovieEntity>>> =
+            movieRepository.getPopularMovies()
     }
 
-    fun getPopularMovies(): LiveData<Resource<List<MovieEntity>>>{
+    fun getPopularMovies(): LiveData<Resource<List<MovieEntity>>> {
         return popularMovies
     }
 }
