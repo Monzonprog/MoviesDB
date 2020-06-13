@@ -26,7 +26,7 @@ class MovieRepository {
     init {
         //Local from Room
         var movieRoomDataBase: MovieRoomDataBase = Room.databaseBuilder(
-            MyApp.getContext(),
+            MyApp.instance,
             MovieRoomDataBase::class.java,
             "db_movies"
         ).build()
