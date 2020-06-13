@@ -1,10 +1,13 @@
 package com.jmonzon.offlinemovies.data.network
 
 import android.os.AsyncTask
+import android.util.Log
 import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.Observer
+import com.jmonzon.offlinemovies.data.network.Resource.Companion.error
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,16 +19,22 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
     init {
         result.value = Resource.loading(null)
         val dbSource = loadFromDb()
-        result.addSource(dbSource) { data ->
+        result.addSource(dbSource, Observer { data ->
             result.removeSource(dbSource)
             if (shouldFetch(data)) {
                 fetchFromNetwork(dbSource)
             } else {
-                result.addSource(dbSource) { newData ->
-                    setValue(Resource.success(newData))
-                }
+                result.addSource(
+                    dbSource,
+                    Observer { newData ->
+                        result.setValue(
+                            Resource.success(newData)
+                        )
+                    }
+                )
             }
-        }
+        })
+
     }
 
     @MainThread
@@ -36,26 +45,27 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
     }
 
     private fun fetchFromNetwork(dbSource: LiveData<ResultType>) {
-        val apiResponse = createCall()
         // we re-attach dbSource as a new source, it will dispatch its latest value quickly
         result.addSource(dbSource) { newData ->
             result.value = Resource.loading(newData)
         }
         createCall().enqueue(object : Callback<RequestType> {
             override fun onResponse(call: Call<RequestType>, response: Response<RequestType>) {
+                Log.i("Resultado de llamada: ", "ok")
                 result.removeSource(dbSource)
                 response.body()?.let { saveResultAndReInit(it) }
             }
 
             override fun onFailure(call: Call<RequestType>, t: Throwable) {
+                Log.i("Resultado de llamada: ", "KO")
                 onFetchFailed()
                 result.removeSource(dbSource)
                 result.addSource(
                     dbSource
                 ) { newData: ResultType ->
                     result.setValue(
-                        Resource.error(
-                            t.message!!,
+                        error(
+                            t.message,
                             newData
                         )
                     )
@@ -81,6 +91,7 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
                 }
             }
         }.execute()
+        Log.i("Salvado en BBDD: ", "OK")
     }
 
 
