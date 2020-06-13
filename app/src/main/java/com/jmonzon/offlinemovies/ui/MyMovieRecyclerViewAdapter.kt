@@ -35,7 +35,13 @@ class MyMovieRecyclerViewAdapter(
         notifyDataSetChanged()
     }
 
-    override fun getItemCount(): Int = mValues.size
+    override fun getItemCount(): Int {
+        if (mValues.size !== 0){
+            return mValues.size
+        }else{
+            return 0
+        }
+    }
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val imageViewCover: ImageView = mView.imageViewCover
